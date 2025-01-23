@@ -11,6 +11,7 @@ type Router struct {
 
 func (r Router) Routers(engine *gin.Engine) {
 	engine.POST("/getUserInfo", r.userHandel.GetUserInfo)
+	engine.POST("/addUser", r.userHandel.AddUser)
 }
 
 func NewRouter(userHandel handlers.UserHandel) *Router {

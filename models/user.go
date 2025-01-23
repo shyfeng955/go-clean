@@ -7,9 +7,14 @@ type User struct {
 }
 
 func (u *User) TableName() string {
-	return "t_user"
+	return "user"
 }
 
 type UserVo struct {
 	Id int `json:"id"`
+}
+
+type AddUserVo struct {
+	Username string `json:"username"`
+	Password string `json:"password"`
 }

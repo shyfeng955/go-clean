@@ -42,3 +42,28 @@ func (u *UserHandel) GetUserInfo(c *gin.Context) {
 		"data":    info,
 	})
 }
+
+func (u *UserHandel) AddUser(c *gin.Context) {
+	req := models.AddUserVo{}
+	if err := c.ShouldBindJSON(&req); err != nil {
+		c.JSON(http.StatusOK, gin.H{
+			"code":    -1,
+			"message": fmt.Sprintf("params error: %v", err),
+		})
+		return
+	}
+
+	err := u.userService.AddUser(c, req.Username, req.Password)
+	if err != nil {
+		c.JSON(http.StatusOK, gin.H{
+			"code":    -1,
+			"message": fmt.Sprintf("Internal server error: %v", err),
+		})
+		return
+	}
+	c.JSON(http.StatusOK, gin.H{
+		"code":    0,
+		"message": "success",
+		"data":    gin.H{},
+	})
+}

@@ -7,11 +7,15 @@ import (
 )
 
 type userRepoImpl struct {
-	mysql *gorm.DB
+	BaseRepo[models.User] // 匿名继承该接口的所有方法
+	mysql                 *gorm.DB
 }
 
 func NewUserRepo(db *gorm.DB) UserRepo {
-	return &userRepoImpl{mysql: db}
+	return &userRepoImpl{
+		mysql:    db,
+		BaseRepo: NewBaseRepo[models.User](db), // 初始化该接口
+	}
 }
 
 func (u *userRepoImpl) GetUserById(ctx context.Context, id int, fields []string) (*models.User, error) {
@@ -19,7 +23,7 @@ func (u *userRepoImpl) GetUserById(ctx context.Context, id int, fields []string)
 	err := u.mysql.WithContext(ctx).
 		Select(fields).
 		Where(&models.User{Id: id}).
-		First(user).Error
+		First(&user).Error
 	if err != nil {
 		return nil, err
 	}
