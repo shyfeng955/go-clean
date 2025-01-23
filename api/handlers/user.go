@@ -1,23 +1,25 @@
 package handlers
 
 import (
-	"fhz/model"
-	"fhz/service"
 	"fmt"
 	"github.com/gin-gonic/gin"
+	"github.com/shyfeng955/go-clean/models"
+	"github.com/shyfeng955/go-clean/service"
 	"net/http"
 )
 
-type ArticleHandel struct {
-	service service.IArticleService
+type UserHandel struct {
+	userService service.UserService
 }
 
-func NewArticleHandel(articleService service.IArticleService) ArticleHandel {
-	return ArticleHandel{service: articleService}
+func NewUserHandel(userService service.UserService) UserHandel {
+	return UserHandel{
+		userService: userService,
+	}
 }
 
-func (a *ArticleHandel) FetchArticle(c *gin.Context) {
-	req := model.ArticleVo{}
+func (u *UserHandel) GetUserInfo(c *gin.Context) {
+	req := models.UserVo{}
 	if err := c.ShouldBindJSON(&req); err != nil {
 		c.JSON(http.StatusOK, gin.H{
 			"code":    -1,
@@ -25,7 +27,8 @@ func (a *ArticleHandel) FetchArticle(c *gin.Context) {
 		})
 		return
 	}
-	list, err := a.service.Fetch(c, req.CreateData, req.Num)
+
+	info, err := u.userService.GetUserInfo(c, req.Id)
 	if err != nil {
 		c.JSON(http.StatusOK, gin.H{
 			"code":    -1,
@@ -34,8 +37,8 @@ func (a *ArticleHandel) FetchArticle(c *gin.Context) {
 		return
 	}
 	c.JSON(http.StatusOK, gin.H{
-		"code":    1,
+		"code":    0,
 		"message": "success",
-		"data":    list,
+		"data":    info,
 	})
 }

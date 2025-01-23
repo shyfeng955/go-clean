@@ -1,8 +1,8 @@
 package app
 
 import (
-	"fhz/api"
 	"github.com/gin-gonic/gin"
+	"github.com/shyfeng955/go-clean/api"
 )
 
 type Server struct {
@@ -11,8 +11,10 @@ type Server struct {
 }
 
 func (s *Server) Start() {
-	s.apiRouter.With(s.engine)
-	s.engine.Run()
+	s.apiRouter.Routers(s.engine)
+	if err := s.engine.Run(); err != nil {
+		return
+	}
 }
 
 func NewServer(engine *gin.Engine, apiRouter *api.Router) *Server {

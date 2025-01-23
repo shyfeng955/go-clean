@@ -2,10 +2,9 @@ package repo
 
 import (
 	"context"
-	"fhz/model"
-	"time"
+	"github.com/shyfeng955/go-clean/models"
 )
 
-type IArticleRepo interface {
-	Fetch(ctx context.Context, createData time.Time, num int) ([]model.Article, error)
+type UserRepo interface {
+	GetUserById(ctx context.Context, id int, fields []string) (*models.User, error)
 }

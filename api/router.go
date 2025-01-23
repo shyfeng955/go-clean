@@ -1,20 +1,20 @@
 package api
 
 import (
-	"fhz/api/handlers"
 	"github.com/gin-gonic/gin"
+	"github.com/shyfeng955/go-clean/api/handlers"
 )
 
 type Router struct {
-	article handlers.ArticleHandel
+	userHandel handlers.UserHandel
 }
 
-func (r Router) With(engine *gin.Engine) {
-	engine.POST("/articles", r.article.FetchArticle)
+func (r Router) Routers(engine *gin.Engine) {
+	engine.POST("/getUserInfo", r.userHandel.GetUserInfo)
 }
 
-func NewRouter(article handlers.ArticleHandel) *Router {
+func NewRouter(userHandel handlers.UserHandel) *Router {
 	return &Router{
-		article: article,
+		userHandel: userHandel,
 	}
 }

@@ -2,11 +2,9 @@ package service
 
 import (
 	"context"
-	"fhz/model"
-	"time"
+	"github.com/shyfeng955/go-clean/models"
 )
 
-// IArticleService represent the article's usecases
-type IArticleService interface {
-	Fetch(ctx context.Context, createdDate time.Time, num int) ([]model.Article, error)
+type UserService interface {
+	GetUserInfo(ctx context.Context, id int) (*models.User, error)
 }
